@@ -1,6 +1,6 @@
 # Node.js中转站服务器
 
-这是一个用于Monica代理的Node.js中转站服务器，专为Windows环境设计。在安装了桌面环境的linux 也能运行
+这是一个用于youcom代理的Node.js中转站服务器，专为Windows环境设计。在安装了桌面环境的linux 也能运行
 
 ## 快速开始
 
@@ -13,7 +13,7 @@
 服务器将在 http://localhost:3000 上运行。
 ## 配置
 
-在 config.json文件中 设置端口 cookie 和 代理 和无头模式（不显示浏览器）
+在 config.json文件中 设置端口  和 代理 和无头模式（不显示浏览器）
 
 ## cookie 获取
 
