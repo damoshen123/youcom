@@ -1,0 +1,9 @@
+{
+    "port": 3000,
+    "pro":false,
+    "proxy":true,
+    "proxyUrl":"http://127.0.0.1:7890",
+    "wutou":false,
+    "tohuman":true
+  }
+  
