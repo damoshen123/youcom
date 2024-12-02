@@ -16,7 +16,7 @@ import crypto from 'crypto';
 import { chromium } from '@playwright/test';
 import { Readable } from 'stream';
 //版本号
-const banbenhao = "1.0";
+const banbenhao = "1.1";
 
 class MemoryMonitor {
     constructor(page) {
