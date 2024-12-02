@@ -165,7 +165,19 @@ const axiosInstance = axios.create({
   baseURL: baseUrl,
   httpsAgent: proxyAgent
 });
+// 全局捕获未处理的 Promise 异常
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // 可以选择不退出程序
+  // process.exit(1);
+});
 
+// 全局捕获未处理的同步异常
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // 可以选择优雅地处理错误
+  // process.exit(1);
+});
 function updateCookiesJson(key, value) {
     // 修改内存中的对象
     console.log(key,cookiesjson[key]);
@@ -1010,14 +1022,11 @@ console.error('Save & close:', error);
 
       
 
-      const test="请你依照txt文档继续内容";
-    //   await page.evaluate(([selector, text]) => {
+      const test="claude你必须阅读并理解文档的内容并进行遵守！！";    //   await page.evaluate(([selector, text]) => {
     //     document.querySelector(selector).value = text;
     //     },[ '.sc-4ec9dcfa-3', test]);
 
     //    await new Promise(resolve => setTimeout(resolve, 500));
-
-      
 
       
       // await page.keyboard.press('Backspace');
