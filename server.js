@@ -434,8 +434,8 @@ async function initializeBrowser() {
         page.on('requestfailed', (request) => {
             console.error('Failed Request:', request.url(), request.failure().errorText);
             });    
-        page.goto('https://you.com/?chatMode=user_mode_42a442b3-b21c-4db0-bcdc-ce5370733c64');
-        console.log('Successfully opened https://you.com/?chatMode=user_mode_42a442b3-b21c-4db0-bcdc-ce5370733c64');
+        page.goto('https://you.com/');
+        console.log('Successfully opened https://you.com/');
 
         // 检查是否成功登录
         // 检查是否成功登录
@@ -590,6 +590,7 @@ class CustomEventSource extends EventEmitter {
         super();
         this.url = new URL(url);
         this.options = options;
+        console.log("options",options);
         this.reconnectInterval = 1000;
         this.shouldReconnect = true;
         this.req = null; // 添加 req 属性
@@ -597,6 +598,8 @@ class CustomEventSource extends EventEmitter {
     }
 
     connect() {
+
+        
         if(One){
             One=false;
             console.log('第一次');
@@ -1007,7 +1010,7 @@ console.error('Save & close:', error);
 
       
 
-      const test="请阅读文本进行回答";
+      const test="请你依照txt文档继续内容";
     //   await page.evaluate(([selector, text]) => {
     //     document.querySelector(selector).value = text;
     //     },[ '.sc-4ec9dcfa-3', test]);
@@ -1267,9 +1270,35 @@ function getFileType(fileName) {
     await page.unroute('**/*');
     await page.route('**/*', async (route) => {
         const request = route.request();
-        const url = request.url();
+        let url = request.url();
+
         
         if (url.includes('/api/streamingSearch')) {
+              console.log('request url:', url);
+              let urlse = new URL(url);
+
+              if (urlse.searchParams.has('enable_worklow_generation_ux')) {
+                urlse.searchParams.set('enable_worklow_generation_ux', 'false');
+                console.log("设置enable_worklow_generation_ux")
+            }
+      
+            if (urlse.searchParams.has('use_personalization_extraction')) {
+              urlse.searchParams.set('use_personalization_extraction', 'false');
+              console.log("设置use_personalization_extraction")
+          }
+          if (urlse.searchParams.has('safeSearch')) {
+            urlse.searchParams.set('safeSearch', 'off');
+            console.log("设置safeSearch")
+        }
+          if (urlse.searchParams.has('use_nested_youchat_updates')) {
+            urlse.searchParams.set('use_nested_youchat_updates', 'false');
+            console.log("设置use_nested_youchat_updates")
+        }
+
+
+
+
+          url=urlse.toString();
 
 
             await route.abort();
@@ -1292,6 +1321,9 @@ function getFileType(fileName) {
 
             try {
 
+                
+                console.log('method:', request.method());
+
                 // 创建 EventSource 实例
                 const eventSourceOptions = {
                     method: request.method(),
@@ -1299,6 +1331,8 @@ function getFileType(fileName) {
                     body: request.postData(),
                     timeout: 30000
                 };
+
+
 
                 if (config.proxy) {
                     eventSourceOptions.agent = proxyAgent;
