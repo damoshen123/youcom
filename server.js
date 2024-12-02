@@ -376,10 +376,6 @@ async function initializeBrowser() {
             deviceScaleFactor: 1,
             isMobile: false,
             userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-            proxy:{
-                "server": "http://127.0.0.1:7890",
-                "bypass": "localhost"
-            },
             headless: config.wutou });
 
         // 创建上下文
