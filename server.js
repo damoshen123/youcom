@@ -16,7 +16,7 @@ import crypto from 'crypto';
 import { chromium } from '@playwright/test';
 import { Readable } from 'stream';
 //版本号
-const banbenhao = "1.1";
+const banbenhao = "1.2";
 
 class MemoryMonitor {
     constructor(page) {
@@ -357,7 +357,6 @@ async function generateUniqueUserId() {
 
 
   function getSessionCookie(cookieString) {
-    console.log("cookieString", cookieString)
     var sessionCookie = cookieString.split('; ').map(pair => {
         const [name, value] = pair.split('=');
         return { name, value, domain: '.you.com', path: '/' };
@@ -367,7 +366,20 @@ async function generateUniqueUserId() {
 
 
   let fileContents=getCookiesFiles();
-  console.log("fileContents",fileContents)
+  
+  fileContents.forEach(file => {
+    try {
+      getSessionCookie(file.content)
+    } catch (error) {
+
+      console.error('Error parsing cookies:', "cookies文件出错"+file.fileName);
+      return;
+    }
+   
+  })
+
+
+
   let  context="";
 async function initializeBrowser() {
     try {
@@ -419,7 +431,7 @@ async function initializeBrowser() {
             return;
         }
         const sessionCookie=getSessionCookie(nowcookie.content)
-        console.log("sessionCookie",sessionCookie);
+       
 
         await context.addCookies(sessionCookie);
 
@@ -685,12 +697,14 @@ class CustomEventSource extends EventEmitter {
 }
 
 
-    
+let viptanchuan=false;
+
+let newuse=true;
 
 async function sendMessage(res3, message) {
 
           
-  try {
+  try {  //关闭干扰窗口
     // 等待按钮可见且 aria-hidden 为 false
     const modalclose = await page.waitForSelector(
         '.modal-close', 
@@ -707,7 +721,7 @@ if(modalclose){
 console.log('modal-close:', "无");
 }
 
-try {
+try {  //关闭干扰窗口
   // 等待按钮可见且 aria-hidden 为 false
   const cancel_sources_modal = await page.waitForSelector(
       'button[data-eventactionname="cancel_sources_modal"]:not([disabled])', 
@@ -723,7 +737,7 @@ if(cancel_sources_modal){
 
 
 } catch (error) {
-console.error('Save & close:', error);
+console.error('cancel_sources_modal:', error);
 }
 
 
@@ -765,6 +779,64 @@ console.error('Save & close:', error);
 
     await context.addCookies(sessionCookie);
     
+
+    //选择模型
+    if(newuse||viptanchuan){
+      if(viptanchuan){
+         await page.goto('https://you.com');
+      }
+
+          try {
+            // 等待按钮可见且 aria-hidden 为 false
+            const more = await page.waitForSelector(
+                'button[data-testid="mode-switcher-chips-more"]', 
+                { 
+                  state: 'visible',
+                  timeout: 20000
+                }
+              );
+            if(more){
+                await page.evaluate(() => {
+                    const more = document.querySelector(
+                      'button[data-testid="mode-switcher-chips-more"]'
+                    );
+                    if (more) more.click();
+                  });
+                  await new Promise((resolve) => setTimeout(resolve, 1000));
+                  await page.keyboard.press('PageDown');
+            }
+
+      } catch (error) {
+        console.error('more:没找到');
+      }
+      
+      try {
+        // 等待按钮可见且 aria-hidden 为 false
+        const sont = await page.waitForSelector(
+            '[data-testid="overview-menu-option-claude_3_5_sonnet"]', 
+            { 
+              state: 'visible',
+              timeout: 20000
+            }
+          );
+        if(sont){
+            await page.evaluate(() => {
+                const sont = document.querySelector(
+                  '[data-testid="overview-menu-option-claude_3_5_sonnet"]'
+                );
+                if (sont) sont.click();
+              });
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+
+  } catch (error) {
+    console.error('sont:没找到');
+  }
+    }
+
+
+
+
     
     try {
         // 等待按钮可见且 aria-hidden 为 false
@@ -882,6 +954,7 @@ console.error('Save & close:', error);
         nowcount=3
         updateCookiesJson(nowfilename,3);
         const text = "弹vip了";
+        viptanchuan=true;
         const response = {
             id: "chatcmpl-" + Math.random().toString(36).substr(2, 9),
             object: "chat.completion",
