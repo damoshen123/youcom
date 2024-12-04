@@ -16,7 +16,7 @@ import crypto from 'crypto';
 import { chromium } from '@playwright/test';
 import { Readable } from 'stream';
 //版本号
-const banbenhao = "1.2";
+const banbenhao = "1.3";
 
 class MemoryMonitor {
     constructor(page) {
@@ -784,6 +784,7 @@ console.error('cancel_sources_modal:', error);
     if(newuse||viptanchuan){
       if(viptanchuan){
          await page.goto('https://you.com');
+         viptanchuan=false;
       }
 
           try {
