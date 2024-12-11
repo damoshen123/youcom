@@ -806,6 +806,7 @@ console.error('cancel_sources_modal:', error);
                   await new Promise((resolve) => setTimeout(resolve, 1000));
                   await page.keyboard.press('PageDown');
             }
+            newuse=false;
 
       } catch (error) {
         console.error('more:没找到');
@@ -1113,7 +1114,7 @@ console.error('cancel_sources_modal:', error);
             });
             return false;
         }
-        await page.type('.sc-4ec9dcfa-3', test, {delay: 10});
+        await page.type('#search-input-textarea', test, {delay: 10});
         console.log('Successfully Inputting text');
         await new Promise(resolve => setTimeout(resolve, 1000));
         if (Aborted) {
