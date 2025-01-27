@@ -383,7 +383,7 @@ async function generateUniqueUserId() {
   let  context="";
 async function initializeBrowser() {
     try {
-        let viewportSize = { width: 800, height: 600 }; // 可以根据需要调整这些值
+        let viewportSize = { width: 1920, height: 1080 }; // 可以根据需要调整这些值
         browser = await chromium.launch({
             deviceScaleFactor: 1,
             isMobile: false,
@@ -843,25 +843,28 @@ console.error('cancel_sources_modal:', error);
     try {
         // 等待按钮可见且 aria-hidden 为 false
         const newchat = await page.waitForSelector(
-            'button[data-testid="chat-layout-new-chat-button"]', 
+            'a[data-testid="chat-layout-new-chat-button"]', 
             { 
               state: 'visible',
               timeout: 500 
             }
           );
+          newchat.click();
         if(newchat){
             await page.evaluate(() => {
                 const newchat = document.querySelector(
-                  'button[data-testid="chat-layout-new-chat-button"]'
+                  'a[data-testid="chat-layout-new-chat-button"]'
                 );
-                if (newchat) newchat.click();
+                if (newchat){
+                 newchat.click();
+                }
               });
         }
 
   } catch (error) {
     console.error('newchat:没找到');
   }
-
+  await new Promise(resolve => setTimeout(resolve, 1000));
     
     try {
         //page.goto('https://you.com/?chatMode=user_mode_42a442b3-b21c-4db0-bcdc-ce5370733c64');
