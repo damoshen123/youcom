@@ -16,7 +16,7 @@ import crypto from 'crypto';
 import { chromium } from '@playwright/test';
 import { Readable } from 'stream';
 //版本号
-const banbenhao = "1.3";
+const banbenhao = "1.4";
 
 class MemoryMonitor {
     constructor(page) {
@@ -383,7 +383,7 @@ async function generateUniqueUserId() {
   let  context="";
 async function initializeBrowser() {
     try {
-        let viewportSize = { width: 1920, height: 1080 }; // 可以根据需要调整这些值
+        let viewportSize = { width: 900, height: 700 }; // 可以根据需要调整这些值
         browser = await chromium.launch({
             deviceScaleFactor: 1,
             isMobile: false,
